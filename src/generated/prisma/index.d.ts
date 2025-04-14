@@ -3266,8 +3266,8 @@ export namespace Prisma {
     email: string
     password: string
     role: $Enums.UserRole
-    needPasswordChange: boolean
-    status: $Enums.UserStatus
+    needPasswordChange?: boolean
+    status?: $Enums.UserStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     admin?: AdminCreateNestedOneWithoutAdminInput
@@ -3278,8 +3278,8 @@ export namespace Prisma {
     email: string
     password: string
     role: $Enums.UserRole
-    needPasswordChange: boolean
-    status: $Enums.UserStatus
+    needPasswordChange?: boolean
+    status?: $Enums.UserStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     admin?: AdminUncheckedCreateNestedOneWithoutAdminInput
@@ -3312,8 +3312,8 @@ export namespace Prisma {
     email: string
     password: string
     role: $Enums.UserRole
-    needPasswordChange: boolean
-    status: $Enums.UserStatus
+    needPasswordChange?: boolean
+    status?: $Enums.UserStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3343,7 +3343,7 @@ export namespace Prisma {
     name: string
     profilePhoto?: string | null
     contactNumber: string
-    isDeleted: boolean
+    isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     admin: UserCreateNestedOneWithoutAdminInput
@@ -3355,7 +3355,7 @@ export namespace Prisma {
     email: string
     profilePhoto?: string | null
     contactNumber: string
-    isDeleted: boolean
+    isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3386,7 +3386,7 @@ export namespace Prisma {
     email: string
     profilePhoto?: string | null
     contactNumber: string
-    isDeleted: boolean
+    isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3861,7 +3861,7 @@ export namespace Prisma {
     name: string
     profilePhoto?: string | null
     contactNumber: string
-    isDeleted: boolean
+    isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3871,7 +3871,7 @@ export namespace Prisma {
     name: string
     profilePhoto?: string | null
     contactNumber: string
-    isDeleted: boolean
+    isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3915,8 +3915,8 @@ export namespace Prisma {
     email: string
     password: string
     role: $Enums.UserRole
-    needPasswordChange: boolean
-    status: $Enums.UserStatus
+    needPasswordChange?: boolean
+    status?: $Enums.UserStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3926,8 +3926,8 @@ export namespace Prisma {
     email: string
     password: string
     role: $Enums.UserRole
-    needPasswordChange: boolean
-    status: $Enums.UserStatus
+    needPasswordChange?: boolean
+    status?: $Enums.UserStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
