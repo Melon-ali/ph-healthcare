@@ -7,22 +7,31 @@ const getAllFormDb = async (params: any) => {
 
   const addConditions: Prisma.AdminWhereInput[] = [];
 
+  // [
+  //   {
+  //     name: {
+  //       contains: params.searchTerm,
+  //       mode: "insensitive",
+  //     },
+  //   },
+  //   {
+  //     email: {
+  //       contains: params.searchTerm,
+  //       mode: "insensitive",
+  //     },
+  //   },
+  // ],
+
+  const adminSearchAbleField = ["name", "email"];
+
   if (params.searchTerm) {
     addConditions.push({
-      OR: [
-        {
-          name: {
-            contains: params.searchTerm,
-            mode: "insensitive",
-          },
+      OR: adminSearchAbleField.map((field) => ({
+        [field]: {
+          contains: params.searchTerm,
+          mode: "insensitive",
         },
-        {
-          email: {
-            contains: params.searchTerm,
-            mode: "insensitive",
-          },
-        },
-      ],
+      })),
     });
   }
 
