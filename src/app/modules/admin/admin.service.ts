@@ -3,9 +3,9 @@ import { Prisma, PrismaClient } from "../../../generated/prisma";
 const prisma = new PrismaClient();
 
 const getAllFormDb = async (params: any) => {
-  console.log({ params });
-
+  const { searchTerm, ...filterData } = params;
   const addConditions: Prisma.AdminWhereInput[] = [];
+  const adminSearchAbleFields = ["name", "email"];
 
   // [
   //   {
@@ -22,14 +22,22 @@ const getAllFormDb = async (params: any) => {
   //   },
   // ],
 
-  const adminSearchAbleField = ["name", "email"];
-
   if (params.searchTerm) {
     addConditions.push({
-      OR: adminSearchAbleField.map((field) => ({
+      OR: adminSearchAbleFields.map((field) => ({
         [field]: {
           contains: params.searchTerm,
           mode: "insensitive",
+        },
+      })),
+    });
+  }
+
+  if (Object.keys(filterData).length > 0) {
+    addConditions.push({
+      AND: Object.keys(filterData).map((key) => ({
+        [key]: {
+          equals: filterData[key],
         },
       })),
     });
