@@ -25,8 +25,8 @@ const getAllFormDb = async (req: Request, res: Response) => {
   }
 };
 
-const getByIdFromDB = async(req: Request, res: Response)=> {
-  const {id } = req.params;
+const getByIdFromDB = async (req: Request, res: Response) => {
+  const { id } = req.params;
   try {
     const result = await AdminService.getByIdFromDB(id);
     res.status(200).json({
@@ -41,9 +41,28 @@ const getByIdFromDB = async(req: Request, res: Response)=> {
       error: error,
     });
   }
- }
+};
+
+const updateIntoDB = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const result = await AdminService.updateIntoDB(id, req.body);
+    res.status(200).json({
+      success: true,
+      message: "Admin Data fetched",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error?.name || "Something Went Wrong",
+      error: error,
+    });
+  }
+};
 
 export const AdminController = {
   getAllFormDb,
-  getByIdFromDB
+  getByIdFromDB,
+  updateIntoDB,
 };
