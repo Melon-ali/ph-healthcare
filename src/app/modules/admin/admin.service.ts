@@ -45,7 +45,18 @@ const getAllFormDb = async (params: any, options: any) => {
           },
   });
 
-  return result;
+  const total = await prisma.admin.count({
+    where: whereCondition,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
 };
 
 export const AdminService = {
