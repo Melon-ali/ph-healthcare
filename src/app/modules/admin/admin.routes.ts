@@ -7,4 +7,8 @@ router.get("/", AdminController.getAllFormDb);
 
 router.get("/:id", AdminController.getByIdFromDB);
 
+router.patch("/:id", AdminController.updateIntoDB);
+
+router.delete("/:id", AdminController.deleteFormDB);
+
 export const AdminRoutes = router;

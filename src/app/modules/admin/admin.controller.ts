@@ -49,7 +49,25 @@ const updateIntoDB = async (req: Request, res: Response) => {
     const result = await AdminService.updateIntoDB(id, req.body);
     res.status(200).json({
       success: true,
-      message: "Admin Data fetched",
+      message: "Updated Successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error?.name || "Something Went Wrong",
+      error: error,
+    });
+  }
+};
+
+const deleteFormDB = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const result = await AdminService.deleteFromDB(id);
+    res.status(200).json({
+      success: true,
+      message: "Deleteted Successfully",
       data: result,
     });
   } catch (error) {
@@ -65,4 +83,5 @@ export const AdminController = {
   getAllFormDb,
   getByIdFromDB,
   updateIntoDB,
+  deleteFormDB,
 };
