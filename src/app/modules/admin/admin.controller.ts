@@ -3,6 +3,7 @@ import { AdminService } from "./admin.service";
 import pick from "../../../shared/pick";
 import { adminFilterableFields } from "./admin.constant";
 import sendResponse from "../../../shared/sendResponse";
+import httpStatus from "http-status";
 
 const getAllFormDb = async (req: Request, res: Response) => {
   try {
@@ -18,7 +19,7 @@ const getAllFormDb = async (req: Request, res: Response) => {
     //   data: result.data,
     // });
     sendResponse(res, {
-      statusCode: 200,
+      statusCode: httpStatus.OK,
       success: true,
       message: "Admin Data fetched",
       meta: result.meta,
