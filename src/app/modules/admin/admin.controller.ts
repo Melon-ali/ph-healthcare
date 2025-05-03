@@ -5,28 +5,24 @@ import { adminFilterableFields } from "./admin.constant";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 
-const getAllFormDb = async (req: Request, res: Response, next: NextFunction) => {
+const getAllFromDB = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const filters = pick(req.query, adminFilterableFields);
     const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
     console.log(options);
     console.log("Options", options);
-    const result = await AdminService.getAllFormDb(filters, options);
-    // res.status(200).json({
-    //   success: true,
-    //   message: "Admin Data fetched",
-    //   meta: result.meta,
-    //   data: result.data,
-    // });
+    const result = await AdminService.getAllFromDB(filters, options);
+    
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: "Admin Data fetched",
       meta: result.meta,
       data: result.data,
-    })
+    });
   } catch (error) {
     next(error);
+    console.log(error, 'Error while fetching admin data');
   }
 };
 
@@ -60,29 +56,30 @@ const updateIntoDB = async (req: Request, res: Response, next: NextFunction) => 
   }
 };
 
-const deleteFormDB = async (req: Request, res: Response, next: NextFunction) => {
+const deleteFromDB = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     const result = await AdminService.deleteFromDB(id);
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: "Deleteted Successfully",
+      message: "Deleted Successfully",
       data: result,
     });
   } catch (error) {
     next(error);
+    console.log(error, 'Error while deleting admin data');
   }
 };
 
-const softDeleteFormDB = async (req: Request, res: Response, next: NextFunction) => {
+const softDeleteFromDB = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     const result = await AdminService.softDeleteFromDB(id);
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: "Deleteted Successfully",
+      message: "Soft Deleted Successfully",
       data: result,
     });
   } catch (error) {
@@ -91,9 +88,9 @@ const softDeleteFormDB = async (req: Request, res: Response, next: NextFunction)
 };
 
 export const AdminController = {
-  getAllFormDb,
+  getAllFromDB,
   getByIdFromDB,
   updateIntoDB,
-  deleteFormDB,
-  softDeleteFormDB
+  deleteFromDB,
+  softDeleteFromDB,
 };

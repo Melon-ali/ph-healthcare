@@ -3,7 +3,7 @@ import { paginationHelper } from "../../../helpars/paginationHelper";
 import prisma from "../../../shared/prisma";
 import { adminSearchAbleFields } from "./admin.constant";
 
-const getAllFormDb = async (params: any, options: any) => {
+const getAllFromDB = async (params: any, options: any) => {
   const { limit, page, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
   const addConditions: Prisma.AdminWhereInput[] = [];
@@ -144,7 +144,7 @@ const softDeleteFromDB = async (id: string) => {
 };
 
 export const AdminService = {
-  getAllFormDb,
+  getAllFromDB,
   getByIdFromDB,
   updateIntoDB,
   deleteFromDB,
