@@ -16,6 +16,7 @@ const getAllFromDB = async (params: any, options: any) => {
           mode: "insensitive",
         },
       })),
+      
     });
   }
 
