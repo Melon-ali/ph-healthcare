@@ -1,3 +1,4 @@
+import { any } from "zod";
 import { Admin, Prisma, UserStatus } from "../../../generated/prisma";
 import { paginationHelper } from "../../../helpars/paginationHelper";
 import prisma from "../../../shared/prisma";
@@ -25,8 +26,8 @@ const getAllFromDB = async (params: IAdminFilterRequest, options: IPaginationOpt
   if (Object.keys(filterData).length > 0) {
     addConditions.push({
       AND: Object.keys(filterData).map((key) => ({
-        [key]: {
-          equals: filterData[key],
+        [key]: { 
+          equals: (filterData as any)[key],
         },
       })),
     });
