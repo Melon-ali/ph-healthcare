@@ -1,9 +1,10 @@
 import express from "express";
 import { userController } from "./user.controller";
 import auth from "../../middlewares/auth";
+import { UserRole } from "../../../generated/prisma/client";
 
 const router = express.Router();
 
-router.post("/", auth("ADMIN", "SUPER_ADMIN", "DOCTOR"), userController.createAdmin);
+router.post("/", auth(UserRole.SUPER_AMDIN, UserRole.ADMIN), userController.createAdmin);
 
 export const userRoutes = router;
