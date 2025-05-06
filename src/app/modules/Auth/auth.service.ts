@@ -6,6 +6,7 @@ import prisma from "../../../shared/prisma";
 import * as bcrypt from "bcrypt";
 import httpStatus from "http-status";
 import ApiError from "../../errors/ApiError";
+import emailSender from "./emailSender";
 
 const loginUser = async (payload: { email: string; password: string }) => {
   // Check if user exists
@@ -31,20 +32,20 @@ const loginUser = async (payload: { email: string; password: string }) => {
 
   // Generate tokens
   const accessToken = jwtHelpers.generateToken(
-    { 
-      email: userData.email, 
+    {
+      email: userData.email,
       role: userData.role,
-      userId: userData.id 
+      userId: userData.id,
     },
     config.jwt.jwt_secret as Secret,
     config.jwt.expires_in as string
   );
 
   const refreshToken = jwtHelpers.generateToken(
-    { 
-      email: userData.email, 
+    {
+      email: userData.email,
       role: userData.role,
-      userId: userData.id 
+      userId: userData.id,
     },
     config.jwt.refresh_token_secret as Secret,
     config.jwt.refresh_token_expires_in as string
@@ -61,7 +62,7 @@ const refreshToken = async (token: string) => {
   let decodedData;
   try {
     decodedData = jwtHelpers.verifyToken(
-      token, 
+      token,
       config.jwt.refresh_token_secret as Secret
     );
   } catch (error) {
@@ -80,10 +81,10 @@ const refreshToken = async (token: string) => {
   }
 
   const accessToken = jwtHelpers.generateToken(
-    { 
-      email: userData.email, 
+    {
+      email: userData.email,
       role: userData.role,
-      userId: userData.id 
+      userId: userData.id,
     },
     config.jwt.jwt_secret as Secret,
     config.jwt.expires_in as string
@@ -95,7 +96,10 @@ const refreshToken = async (token: string) => {
   };
 };
 
-const changePassword = async (user: JwtPayload, payload: { oldPassword: string; newPassword: string }) => {
+const changePassword = async (
+  user: JwtPayload,
+  payload: { oldPassword: string; newPassword: string }
+) => {
   const userData = await prisma.user.findUnique({
     where: {
       email: user.email,
@@ -143,27 +147,41 @@ const forgotPassword = async (payload: { email: string }) => {
       status: UserStatus.ACTIVE,
     },
   });
-  
+
   const resetPassToken = jwtHelpers.generateToken(
-    { 
-      email: userData.email, 
+    {
+      email: userData.email,
       role: userData.role,
-      userId: userData.id 
+      userId: userData.id,
     },
     config.jwt.reset_pass_token_secret as Secret,
     config.jwt.reset_pass_token_expires_in as string
   );
 
-  console.log(resetPassToken)
+  console.log(resetPassToken);
 
-  const resetPassLink = config.reset_pass_link + `?userId=${userData.id}&token=${resetPassToken}`;
+  const resetPassLink =
+    config.reset_pass_link + `?userId=${userData.id}&token=${resetPassToken}`;
 
-  console.log(resetPassLink)
-}
+  await emailSender(
+    userData.email,
+    `
+    <div>
+        <P>Dear User</P>
+        <P>Your Password Reset Link is: <a href="${resetPassLink}">
+        <button>
+            Reset Password
+        </button></a></P>
+    </div>
+    `
+  );
+
+  console.log(resetPassLink);
+};
 
 export const AuthServices = {
   loginUser,
   refreshToken,
   changePassword,
-  forgotPassword
+  forgotPassword,
 };
