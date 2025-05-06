@@ -13,4 +13,6 @@ router.post("/change-password", auth(UserRole.SUPER_AMDIN, UserRole.DOCTOR, User
 
 router.post("/forgot-password", AuthController.forgotPassword);
 
+router.post("/reset-password", AuthController.resetPassword);
+
 export const AuthRoutes = router;

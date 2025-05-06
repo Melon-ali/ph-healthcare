@@ -179,9 +179,32 @@ const forgotPassword = async (payload: { email: string }) => {
   console.log(resetPassLink);
 };
 
+const resetPassword = async (token: string, payload: { id: string,password: string }) => {
+  console.log({token, payload});
+
+  const userData = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: payload.id,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
+  const isValidToken = jwtHelpers.verifyToken(
+    token,
+    config.jwt.reset_pass_token_secret as Secret
+  );
+
+  console.log(isValidToken)
+
+  if(!isValidToken) {
+    throw new ApiError(httpStatus.FORBIDDEN, "Forbidden");
+  }
+}
+
 export const AuthServices = {
   loginUser,
   refreshToken,
   changePassword,
   forgotPassword,
+  resetPassword
 };
