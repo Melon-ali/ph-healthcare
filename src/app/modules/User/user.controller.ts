@@ -3,8 +3,8 @@ import { userService } from "./user.service";
 
 const createAdmin = async (req: Request, res: Response) => {
   try {
-    //   console.log(req.body);
-    const result = await userService.createAdmin(req.body);
+
+    const result = await userService.createAdmin(req);
 
     res.status(200).json({
       success: true,
@@ -14,7 +14,7 @@ const createAdmin = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error?.name || "Something Went Wrong",
+      message: "Something Went Wrong",
       error: error,
     });
   }
