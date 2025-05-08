@@ -2,10 +2,11 @@ import { UserRole } from "../../../generated/prisma";
 import * as bcrypt from "bcrypt";
 import prisma from "../../../shared/prisma";
 import { fileUploader } from "../../../helpars/fileUploader";
+import { IFile } from "../../interfaces/file";
 
 const createAdmin = async (req: any) => {
 
-  const file = req.file;
+  const file: IFile = req.file;
   console.log(req.body)
   if(file){
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
