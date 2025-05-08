@@ -20,14 +20,26 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const uploadToCloudinary = async (file: Express.Multer.File) => {
-    cloudinary.uploader.upload(
-        "\projects\ph-healthcare/uploads/audio.png",
-        {
-          public_id: "audio",
-        }
-      );
-}
+//   console.log(file);
+ if (!file) throw new Error("No file provided for upload.");
 
-export const fileUploader = { 
-    upload 
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(
+      file.path,
+      { public_id: file.originalname },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+  
+};
+
+export const fileUploader = {
+  upload,
+  uploadToCloudinary,
 };

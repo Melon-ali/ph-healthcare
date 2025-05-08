@@ -1,35 +1,40 @@
 import { UserRole } from "../../../generated/prisma";
 import * as bcrypt from "bcrypt";
 import prisma from "../../../shared/prisma";
+import { fileUploader } from "../../../helpars/fileUploader";
 
 const createAdmin = async (req: any) => {
-  console.log("File", req.file);
-  console.log("Data", req.body.data);
 
-  // const hashedPassword: string = await bcrypt.hash(data.password, 12);
+  const file = req.file;
+  console.log(req.body)
+  if(file){
+    const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
+    req.body.data.admin.profilePhoto = uploadToCloudinary?.secure_url;
+    console.log("uploadded", uploadToCloudinary);
+  }
 
-  // const userData = {
-  //   email: data.admin.email,
-  //   password: hashedPassword,
-  //   role: UserRole.ADMIN,
-  // };
+  const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
 
-  // const result = await prisma.$transaction(async (transactionClient) => {
-  //   await transactionClient.user.create({
-  //     data: userData,
-  //   });
+  const userData = {
+    email: req.body.admin.email,
+    password: hashedPassword,
+    role: UserRole.ADMIN,
+  };
 
-  //   const createdAdminData = await transactionClient.admin.create({
-  //     data: data.admin,
-  //   });
-  //   return createdAdminData;
-  // });
-  // return result;
+  const result = await prisma.$transaction(async (transactionClient) => {
+    await transactionClient.user.create({
+      data: userData,
+    });
+
+    const createdAdminData = await transactionClient.admin.create({
+      data: req.body.admin,
+    });
+    return createdAdminData;
+  });
+  return result;
 };
 
 export const userService = {
   createAdmin,
 };
-function transactionClient(): any {
-  throw new Error("Function not implemented.");
-}
+
