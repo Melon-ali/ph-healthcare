@@ -51,7 +51,7 @@ model Doctor {
   address             String
   registrationNumber  String
   gender              Gender
-  appointments        Int
+  appointmentFee      Int
   qualification       String
   currentWorkingPlace String
   description         String
